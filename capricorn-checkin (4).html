@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capricorn Full Moon Check-In · Soul Growth Circle</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --midnight: #0d1119;
+  --gold: #c9a96e;
+  --gold-light: #e8d5b0;
+  --cream: #f0ebe0;
+  --silver-dim: rgba(200,204,216,0.5);
+  --text-soft: rgba(240,235,224,0.55);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--midnight);
+  color: var(--cream);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle var(--d) ease-in-out infinite alternate;
+}
+@keyframes twinkle {
+  from { opacity: var(--oa); }
+  to { opacity: var(--ob); }
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 660px;
+  margin: 0 auto;
+  padding: 64px 28px 100px;
+}
+
+.screen { display: none; }
+.screen.active { display: block; animation: rise 0.6s ease forwards; }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Typography */
+.eyebrow {
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+
+.display-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(34px, 6vw, 52px);
+  font-weight: 300;
+  line-height: 1.15;
+  text-align: center;
+  color: var(--cream);
+  margin-bottom: 10px;
+}
+.display-title em { font-style: italic; color: var(--gold-light); }
+
+.date-line {
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--silver-dim);
+  margin-bottom: 44px;
+}
+
+.lead {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px;
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--gold-light);
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+/* Moon */
+.moon {
+  text-align: center;
+  font-size: 52px;
+  display: block;
+  margin-bottom: 28px;
+  animation: moonpulse 5s ease-in-out infinite;
+}
+@keyframes moonpulse {
+  0%,100% { filter: drop-shadow(0 0 10px rgba(201,169,110,0.3)); }
+  50% { filter: drop-shadow(0 0 28px rgba(201,169,110,0.7)); }
+}
+
+/* Audio block */
+.audio-block {
+  background: rgba(201,169,110,0.07);
+  border: 1px solid rgba(201,169,110,0.2);
+  border-radius: 3px;
+  padding: 36px 32px;
+  text-align: center;
+  margin-bottom: 32px;
+}
+.audio-label {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+  display: block;
+}
+.audio-instruction {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.audio-placeholder {
+  background: rgba(255,255,255,0.04);
+  border: 1px dashed rgba(201,169,110,0.25);
+  border-radius: 3px;
+  padding: 24px;
+  color: var(--silver-dim);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+.audio-embed-zone { margin-bottom: 20px; }
+.audio-note {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--text-soft);
+  line-height: 1.7;
+}
+
+/* Buttons */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 17px 24px;
+  background: transparent;
+  border: 1px solid rgba(201,169,110,0.35);
+  color: var(--gold-light);
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.25s;
+  text-align: center;
+}
+.btn:hover { background: rgba(201,169,110,0.09); border-color: rgba(201,169,110,0.6); color: var(--gold); }
+.btn-primary { background: rgba(201,169,110,0.1); border-color: rgba(201,169,110,0.5); }
+
+/* Anchor */
+.anchor-screen { text-align: center; padding: 20px 0; }
+.anchor-label {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 48px;
+  display: block;
+}
+.anchor-words {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 2;
+  letter-spacing: 0.06em;
+  margin-bottom: 48px;
+}
+.anchor-words .word { display: block; opacity: 0; transform: translateY(8px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.anchor-words .word.show { opacity: 1; transform: translateY(0); }
+.anchor-words .bell { color: var(--gold); }
+.anchor-breath {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--text-soft);
+  line-height: 1.9;
+  max-width: 440px;
+  margin: 0 auto 52px;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+.anchor-breath.show { opacity: 1; }
+
+/* Reflection */
+.dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 56px; }
+.dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(201,169,110,0.2); transition: all 0.4s; }
+.dot.filled { background: rgba(201,169,110,0.5); }
+.dot.active { background: var(--gold); transform: scale(1.3); }
+
+.q-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  color: var(--gold);
+  opacity: 0.5;
+  margin-bottom: 6px;
+  display: block;
+}
+.q-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.35;
+  margin-bottom: 12px;
+}
+.q-invite {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--text-soft);
+  line-height: 1.75;
+  margin-bottom: 28px;
+}
+
+textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(201,169,110,0.2);
+  color: var(--cream);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.8;
+  padding: 16px 4px;
+  resize: none;
+  min-height: 140px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+textarea::placeholder { color: rgba(240,235,224,0.18); font-style: italic; }
+textarea:focus { border-bottom-color: rgba(201,169,110,0.5); }
+
+.field-error { font-size: 12px; color: rgba(201,169,110,0.6); font-style: italic; margin-top: 8px; display: none; }
+
+.nav-row { display: flex; gap: 12px; margin-top: 32px; }
+.btn-back { width: auto; padding: 17px 28px; flex-shrink: 0; opacity: 0.5; }
+.btn-back:hover { opacity: 1; }
+
+/* Loading */
+.loading-screen { text-align: center; padding: 60px 0; }
+.loading-moon { font-size: 44px; display: block; margin-bottom: 32px; animation: moonpulse 2s ease-in-out infinite; }
+.loading-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-style: italic;
+  color: var(--gold-light);
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+.loading-sub { font-size: 12px; color: var(--text-soft); letter-spacing: 0.1em; }
+
+/* Mirror */
+.mirror-header { text-align: center; margin-bottom: 52px; }
+.mirror-moon { font-size: 44px; display: block; margin-bottom: 20px; animation: moonpulse 5s ease-in-out infinite; }
+.mirror-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 10px;
+}
+.mirror-subtitle { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--silver-dim); }
+
+.mirror-card {
+  background: rgba(201,169,110,0.05);
+  border: 1px solid rgba(201,169,110,0.15);
+  border-radius: 3px;
+  padding: 44px 40px;
+  margin-bottom: 28px;
+}
+
+.mirror-card-eyebrow {
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 32px;
+  display: block;
+  text-align: center;
+}
+
+.mirror-section { margin-bottom: 36px; padding-bottom: 36px; border-bottom: 1px solid rgba(201,169,110,0.08); }
+.mirror-section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+.mirror-section-label {
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.65;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.mirror-section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--cream);
+  margin-bottom: 12px;
+  font-style: italic;
+}
+
+.mirror-section-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--gold-light);
+  line-height: 1.85;
+}
+
+.mirror-error {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--text-soft);
+  text-align: center;
+  padding: 32px;
+}
+
+.closing-line {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--text-soft);
+  line-height: 1.9;
+  text-align: center;
+  margin: 40px 0 32px;
+}
+
+.community-block { margin-top: 40px; padding-top: 36px; border-top: 1px solid rgba(201,169,110,0.1); text-align: center; }
+.community-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--text-soft);
+  line-height: 1.9;
+  margin-bottom: 20px;
+}
+.community-link {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201,169,110,0.3);
+  padding-bottom: 3px;
+  transition: border-color 0.2s;
+}
+.community-link:hover { border-color: var(--gold); }
+
+@media (max-width: 480px) {
+  .wrap { padding: 44px 20px 80px; }
+  .mirror-card { padding: 28px 22px; }
+  .audio-block { padding: 28px 20px; }
+}
+
+@media print {
+  body { background: #fff; color: #1a1a2e; }
+  .starfield, .btn, .community-block { display: none !important; }
+  .mirror-card { border: 1px solid #ddd; background: #fafafa; }
+  .mirror-section-body, .mirror-section-title, .closing-line { color: #2a2a3e; }
+  .mirror-card-eyebrow, .mirror-section-label { color: #8a6a2e; }
+}
+
+  /* Consent screen */
+  .consent-image-wrap { width: 100%; margin-bottom: 0; }
+  .consent-image { width: 100%; display: block; border-radius: 3px 3px 0 0; }
+  .consent-body { padding: 32px 24px 24px; }
+  .consent-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .consent-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(240,235,224,0.75);
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+  .consent-check-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    margin: 24px 0 20px;
+  }
+  .consent-check-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 3px;
+    accent-color: #c9a96e;
+    cursor: pointer;
+  }
+  .consent-check-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--gold-light);
+    line-height: 1.6;
+  }
+  .consent-begin-btn {
+    margin-top: 8px;
+    opacity: 0.4;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .consent-begin-btn:not([disabled]) {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .consent-footer {
+    border-top: 1px solid rgba(201,169,110,0.1);
+    padding: 20px 24px;
+    text-align: center;
+  }
+  .consent-footer p {
+    font-size: 10px;
+    color: rgba(240,235,224,0.3);
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="starfield" id="starfield"></div>
+
+<div class="wrap">
+
+  <!-- CONSENT SCREEN -->
+  <div class="screen active" id="screen-consent">
+    <div class="consent-image-wrap">
+      <img src="full-moon-gems.png" alt="Capricorn Full Moon GEMS Transmission" class="consent-image">
+    </div>
+    <div class="consent-body">
+      <h2 class="consent-title">Before We Begin</h2>
+      <p class="consent-text">This experience incorporates principles of mindfulness, focused attention, and reflective self-hypnosis to support inner exploration.</p>
+      <p class="consent-text">Please find a quiet place where you will not be disturbed. This experience is intended to be experienced with your eyes closed. Do not listen while driving or operating machinery.</p>
+      <p class="consent-text">By continuing, you confirm that you have read and understood the information above.</p>
+      <label class="consent-check-label">
+        <input type="checkbox" id="consent-box" onchange="toggleBegin()">
+        <span class="consent-check-text">I understand and I'm ready to begin.</span>
+      </label>
+      <button class="btn btn-primary consent-begin-btn" id="consent-begin" onclick="showWelcome()" disabled>Begin →</button>
+    </div>
+    <div class="consent-footer">
+      <p>© Soul Growth Studio · This experience is for personal growth and wellness purposes only and does not constitute medical, psychological, or therapeutic advice. If you are experiencing a mental health crisis, please contact a qualified professional.</p>
+    </div>
+  </div>
+
+  <!-- WELCOME -->
+  <div class="screen" id="screen-welcome">
+    <span class="moon">🌕</span>
+    <div class="eyebrow">Soul Growth Circle · GEMS Transmission</div>
+    <h1 class="display-title">The Full Moon<br><em>Check-In</em></h1>
+    <div class="date-line">Capricorn Full Moon · June 29, 2026</div>
+    <p class="lead">The body has been keeping track<br>of everything the mind called fine.<br><br>This is your invitation to pause<br>and honestly notice.</p>
+
+    <div class="audio-block">
+      <span class="audio-label">Before you begin</span>
+      <p class="audio-instruction">Press play. Let Tina guide you in.</p>
+      <div class="audio-embed-zone">
+        <audio controls style="width:100%;accent-color:#c9a96e;margin-bottom:8px;">
+          <source src="Capricorn Full Moon Check-in.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+      <p class="audio-note">When Tina invites you to open your eyes and begin your check-in, the questions will be waiting here.</p>
+    </div>
+
+    <button class="btn btn-primary" onclick="showAnchor()">I'm ready to begin →</button>
+  </div>
+
+  <!-- ANCHOR -->
+  <div class="screen" id="screen-anchor">
+    <div class="anchor-screen">
+      <span class="anchor-label">Your anchor</span>
+      <div class="anchor-words">
+        <span class="word" id="w-seat">Seat.</span>
+        <span class="word" id="w-feet">Feet.</span>
+        <span class="word" id="w-ground">Ground.</span>
+        <span class="word" id="w-return">Return. <span class="bell">🔔</span></span>
+      </div>
+      <p class="anchor-breath" id="anchor-breath">
+        Feel the weight of your body where it meets the chair.<br>
+        Feel your feet on the floor.<br>
+        You don't have to do anything yet.<br>
+        Just arrive.
+      </p>
+      <button class="btn" id="anchor-btn" style="display:none;max-width:320px;margin:0 auto;" onclick="startReflections()">I'm here. Begin my check-in →</button>
+    </div>
+  </div>
+
+  <!-- REFLECTIONS -->
+  <div class="screen" id="screen-reflections">
+    <div class="dots">
+      <div class="dot active" id="dot-0"></div>
+      <div class="dot" id="dot-1"></div>
+      <div class="dot" id="dot-2"></div>
+      <div class="dot" id="dot-3"></div>
+      <div class="dot" id="dot-4"></div>
+    </div>
+
+    <div class="q-block" id="q-0">
+      <span class="q-number">I of V</span>
+      <h2 class="q-text">What feels complete?</h2>
+      <p class="q-invite">Something in you already knows. A role. A way of showing up. A season of carrying something that has quietly run its course. Let it come without judgment.</p>
+      <textarea id="r-0" rows="5" placeholder="What I notice is complete..."></textarea>
+      <div class="field-error" id="e-0">Take a breath and let something surface before continuing.</div>
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="showAnchor()">←</button>
+        <button class="btn btn-primary" onclick="nextQ(0)">Continue →</button>
+      </div>
+    </div>
+
+    <div class="q-block" id="q-1" style="display:none">
+      <span class="q-number">II of V</span>
+      <h2 class="q-text">What no longer fits?</h2>
+      <p class="q-invite">Not what you think you should change. What has quietly stopped fitting. A responsibility. An expectation. A version of yourself you've been maintaining out of habit.</p>
+      <textarea id="r-1" rows="5" placeholder="What no longer fits..."></textarea>
+      <div class="field-error" id="e-1">Take a breath and let something surface before continuing.</div>
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goToQ(0)">←</button>
+        <button class="btn btn-primary" onclick="nextQ(1)">Continue →</button>
+      </div>
+    </div>
+
+    <div class="q-block" id="q-2" style="display:none">
+      <span class="q-number">III of V</span>
+      <h2 class="q-text">What has your body been trying to tell you?</h2>
+      <p class="q-invite">Your body has been keeping track. Not with words. With tension. With tiredness. With the place you brace before you say yes. What has it been holding that you haven't yet let yourself hear?</p>
+      <textarea id="r-2" rows="5" placeholder="My body has been trying to tell me..."></textarea>
+      <div class="field-error" id="e-2">Take a breath and let something surface before continuing.</div>
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goToQ(1)">←</button>
+        <button class="btn btn-primary" onclick="nextQ(2)">Continue →</button>
+      </div>
+    </div>
+
+    <div class="q-block" id="q-3" style="display:none">
+      <span class="q-number">IV of V</span>
+      <h2 class="q-text">What are you ready to release?</h2>
+      <p class="q-invite">You don't have to know how. You don't have to be ready to act on it yet. Just notice what is ready to be set down. Even naming it here is the beginning.</p>
+      <textarea id="r-3" rows="5" placeholder="I am ready to release..."></textarea>
+      <div class="field-error" id="e-3">Take a breath and let something surface before continuing.</div>
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goToQ(2)">←</button>
+        <button class="btn btn-primary" onclick="nextQ(3)">Continue →</button>
+      </div>
+    </div>
+
+    <div class="q-block" id="q-4" style="display:none">
+      <span class="q-number">V of V</span>
+      <h2 class="q-text">What is quietly asking for more space?</h2>
+      <p class="q-invite">Not a goal. Not a plan. Something that has been waiting patiently. A quality. A pace. A way of being with yourself. What wants room to breathe in the season ahead?</p>
+      <textarea id="r-4" rows="5" placeholder="What is asking for more space..."></textarea>
+      <div class="field-error" id="e-4">Take a breath and let something surface before continuing.</div>
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goToQ(3)">←</button>
+        <button class="btn btn-primary" onclick="generateMirror()">Reveal my mirror →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="screen" id="screen-loading">
+    <div class="loading-screen">
+      <span class="loading-moon">🌕</span>
+      <p class="loading-text">Sitting with what you've shared.<br>Finding what's underneath.</p>
+      <p class="loading-sub">Your mirror is being woven...</p>
+    </div>
+  </div>
+
+  <!-- MIRROR -->
+  <div class="screen" id="screen-mirror">
+    <div class="mirror-header">
+      <span class="mirror-moon">🌕</span>
+      <h2 class="mirror-title">What Your Body<br><em>Wants You to Remember</em></h2>
+      <div class="mirror-subtitle">Capricorn Full Moon · June 29, 2026</div>
+    </div>
+
+    <div class="mirror-card" id="mirror-card">
+      <span class="mirror-card-eyebrow">Soul Growth Circle · Your Full Moon Mirror</span>
+      <div id="mirror-content"></div>
+    </div>
+
+    <button class="btn btn-primary" onclick="window.print()" style="margin-bottom:16px;">Save or print my mirror</button>
+
+    <p class="closing-line">
+      Returning isn't something we do because we're broken.<br>
+      It's something we do because we're worth returning to. 🕯️
+    </p>
+
+    <div class="community-block">
+      <p class="community-text">If this practice opened something in you,<br>Soul Growth Circle is where the returning continues.</p>
+      <a class="community-link" href="https://skool.com/bodydialoguemethod" target="_blank">The door is open. 🕯️</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+function toggleBegin() {
+  const box = document.getElementById('consent-box');
+  const btn = document.getElementById('consent-begin');
+  if (box.checked) {
+    btn.removeAttribute('disabled');
+  } else {
+    btn.setAttribute('disabled', true);
+  }
+}
+
+function showWelcome() {
+  showScreen('screen-welcome');
+}
+
+
+// Stars
+const sf = document.getElementById('starfield');
+for (let i = 0; i < 90; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const sz = Math.random() * 1.8 + 0.4;
+  const oa = (Math.random() * 0.35 + 0.08).toFixed(2);
+  const ob = (oa * 0.25).toFixed(2);
+  s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--oa:${oa};--ob:${ob};--d:${(Math.random()*4+2).toFixed(1)}s;`;
+  sf.appendChild(s);
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showAnchor() {
+  showScreen('screen-anchor');
+  const words = ['w-seat','w-feet','w-ground','w-return'];
+  words.forEach((id, i) => {
+    setTimeout(() => document.getElementById(id).classList.add('show'), 600 + i * 700);
+  });
+  setTimeout(() => document.getElementById('anchor-breath').classList.add('show'), 600 + 4 * 700);
+  setTimeout(() => document.getElementById('anchor-btn').style.display = 'block', 600 + 4 * 700 + 1800);
+}
+
+function startReflections() {
+  showScreen('screen-reflections');
+  goToQ(0);
+}
+
+function goToQ(n) {
+  document.querySelectorAll('.q-block').forEach(b => b.style.display = 'none');
+  document.getElementById(`q-${n}`).style.display = 'block';
+  for (let i = 0; i < 5; i++) {
+    const dot = document.getElementById(`dot-${i}`);
+    dot.className = 'dot' + (i < n ? ' filled' : i === n ? ' active' : '');
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextQ(n) {
+  const val = document.getElementById(`r-${n}`).value.trim();
+  if (!val) {
+    document.getElementById(`e-${n}`).style.display = 'block';
+    document.getElementById(`r-${n}`).focus();
+    return;
+  }
+  document.getElementById(`e-${n}`).style.display = 'none';
+  goToQ(n + 1);
+}
+
+async function generateMirror() {
+  const val = document.getElementById('r-4').value.trim();
+  if (!val) {
+    document.getElementById('e-4').style.display = 'block';
+    document.getElementById('r-4').focus();
+    return;
+  }
+
+  const responses = [0,1,2,3,4].map(i => document.getElementById(`r-${i}`).value.trim());
+
+  showScreen('screen-loading');
+
+  const prompt = `You are a deeply compassionate somatic guide and reflective mirror. A woman has just completed a Capricorn Full Moon check-in practice. She answered five reflective questions while in a grounded, present state.
+
+Here are her five responses:
+
+1. What feels complete: "${responses[0]}"
+2. What no longer fits: "${responses[1]}"
+3. What her body has been trying to tell her: "${responses[2]}"
+4. What she is ready to release: "${responses[3]}"
+5. What is quietly asking for more space: "${responses[4]}"
+
+Your task is to synthesize these responses into a compassionate mirror that reveals the deeper pattern she may not have fully seen herself. Do NOT simply repeat her words back. Read between the lines. Notice what threads connect her answers. Name the role she has been playing. Speak to what her body is really asking for beneath the surface.
+
+Write in four sections. Format your response as JSON with this exact structure:
+{
+  "role_title": "A poetic 3-5 word title for the role she has been carrying (e.g. The One Who Waits, The One Who Holds It Together)",
+  "role_body": "2-3 sentences that name and gently illuminate this pattern. Speak to her directly. Use 'you' not 'she'. Be warm, clear, and true.",
+  "releasing_body": "2-3 sentences about what releasing this truly means for her body and her life. Not what she typed — what it means underneath.",
+  "reclaiming_body": "2-3 sentences about what is genuinely asking for space. Name it in a way that surprises her gently. Not productivity. The real thing.",
+  "next_return": "2-3 sentences offering one gentle, physical, embodied next step. Make it small enough to actually do. Grounded in her body, not her to-do list."
+}
+
+Respond with JSON only. No preamble. No explanation.`;
+
+  try {
+    const response = await fetch("https://sgs-mirror-proxy.balancedsoulutions.workers.dev", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+
+    const data = await response.json();
+    const text = data.content.map(b => b.text || '').join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const mirror = JSON.parse(clean);
+
+    document.getElementById('mirror-content').innerHTML = `
+      <div class="mirror-section">
+        <span class="mirror-section-label">The role that is completing</span>
+        <div class="mirror-section-title">${mirror.role_title}</div>
+        <div class="mirror-section-body">${mirror.role_body}</div>
+      </div>
+      <div class="mirror-section">
+        <span class="mirror-section-label">What you are releasing</span>
+        <div class="mirror-section-body">${mirror.releasing_body}</div>
+      </div>
+      <div class="mirror-section">
+        <span class="mirror-section-label">What your body is making space for</span>
+        <div class="mirror-section-body">${mirror.reclaiming_body}</div>
+      </div>
+      <div class="mirror-section">
+        <span class="mirror-section-label">Your next return</span>
+        <div class="mirror-section-body">${mirror.next_return}</div>
+      </div>
+    `;
+
+    showScreen('screen-mirror');
+
+  } catch (err) {
+    document.getElementById('mirror-content').innerHTML = `
+      <div class="mirror-error">
+        Something interrupted the reflection. Take a breath and try again.
+      </div>
+    `;
+    showScreen('screen-mirror');
+  }
+}
+</script>
+</body>
+</html>
